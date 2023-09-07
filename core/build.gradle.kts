@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("maven-publish")
     id("signing")
-    id("org.jreleaser") version "1.5.1"
+    id("org.jreleaser") version "1.8.0"
 
 }
 
