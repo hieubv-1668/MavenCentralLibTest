@@ -18,7 +18,7 @@ jobs:
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - name: Publish package to local release directory
-        run: ./gradlew :publish
+        run: ./gradlew core:publish
       - name: Publish package to maven central
         env:
           JRELEASER_NEXUS2_USERNAME: ${{ secrets.JRELEASER_NEXUS2_USERNAME }}
