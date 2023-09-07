@@ -2,17 +2,76 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("maven-publish")
+    id("signing")
+    id("org.jreleaser") version "1.5.1"
+
 }
 
 publishing {
     publications {
-        register<MavenPublication>("release") {
-            groupId = "com.hieubv.libtest"
+        create<MavenPublication>("release") {
+            groupId = "io.github.hieubv-1668"
             artifactId = "core"
-            version = "1.0"
-
+            description = "Create Core lib test"
+            version = "1.0.0"
             afterEvaluate {
                 from(components["release"])
+            }
+        }
+        withType<MavenPublication> {
+            pom {
+                packaging = "jar"
+                name.set("core")
+                description.set("Core lib test")
+                url.set("https://github.com/hieubv-1668/MavenCentralLibTest")
+                inceptionYear.set("2023")
+                licenses {
+                    license {
+                        name.set("MIT license")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("hieubv")
+                        name.set("Van Hieu")
+                        email.set("bui.van.hieu@sun-asterisk.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git@github.com:hieubv-1668/MavenCentralLibTest.git")
+                    developerConnection.set("scm:git:ssh:git@github.com:hieubv-1668/MavenCentralLibTest")
+                    url.set("https://github.com/hieubv-1668/MavenCentralLibTest")
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = layout.buildDirectory.dir("release").get().asFile.toURI()
+        }
+    }
+}
+
+jreleaser {
+    project {
+        copyright.set("Van Hieu")
+    }
+    gitRootSearch.set(true)
+    signing {
+        active.set(org.jreleaser.model.Active.ALWAYS)
+        armored.set(true)
+    }
+    deploy {
+        maven {
+            nexus2 {
+                create("maven-central") {
+                    active.set(org.jreleaser.model.Active.ALWAYS)
+                    url.set("https://s01.oss.sonatype.org/service/local")
+                    closeRepository.set(false)
+                    releaseRepository.set(false)
+                    stagingRepositories.add("build/release")
+                }
             }
         }
     }
@@ -21,6 +80,13 @@ publishing {
 android {
     namespace = "com.hieubv.libtest"
     compileSdk = 33
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 
     defaultConfig {
         minSdk = 24
