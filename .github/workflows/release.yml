@@ -21,13 +21,13 @@ jobs:
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - name: Publish package to local release directory
-        run: ./gradlew core:publish
+        run: ./gradlew :core:publish
       - name: Publish package to maven central
         env:
-          JRELEASER_NEXUS2_USERNAME: ${{ secrets.JRELEASER_NEXUS2_USERNAME }}
-          JRELEASER_NEXUS2_PASSWORD: ${{ secrets.JRELEASER_NEXUS2_PASSWORD }}
-          JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
-          JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
-          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
-          JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
-        run: ./gradlew core:jreleaserDeploy -DaltDeploymentRepository=local::file:./build/release
+          JRELEASER_NEXUS2_USERNAME: ${ secrets.JRELEASER_NEXUS2_USERNAME }
+          JRELEASER_NEXUS2_PASSWORD: ${ secrets.JRELEASER_NEXUS2_PASSWORD }
+          JRELEASER_GPG_PASSPHRASE: ${ secrets.JRELEASER_GPG_PASSPHRASE }
+          JRELEASER_GPG_SECRET_KEY: ${ secrets.JRELEASER_GPG_SECRET_KEY }
+          JRELEASER_GPG_PUBLIC_KEY: ${ secrets.JRELEASER_GPG_PUBLIC_KEY }
+          JRELEASER_GITHUB_TOKEN: ${ secrets.JRELEASER_GITHUB_TOKEN }
+        run: ./gradlew :core:jreleaserDeploy -DaltDeploymentRepository=local::file:./core/build/release
